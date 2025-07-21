@@ -20,9 +20,42 @@
 • On other nodes:
   ⁃ Start Elasticsearch with `bin/elasticsearch --enrollment-token <token>`, using the enrollment token that you generated.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-curl --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:INRxozyzt_u5rg0nLjTy https://localhost:9200
+curl --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G https://localhost:9200
 
 
-# service-tokens can be generated using below command
+#service-tokens can be generated using below command
 ./elasticsearch-service-tokens create elastic/kibana my-token
 SERVICE_TOKEN elastic/kibana/my-token = AAEAAWVsYXN0aWMva2liYW5hL215LXRva2VuOldoOG5ibzZBUVFtWFlVNFoxd0lNVUE
+
+#to enroll the kibana 
+./kibana-setup --enrollment-token  eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjE1OjkyMDAiXSwiZmdyIjoiMGZiOWFkYzgyZDZlN2ZhMzEyNGZjMDkyODAxMWRiZWM4OGQyNzNjMjczN2IxNGY1Njk5ZTc2MWMwNTVlOWIxZCIsImtleSI6IlV2d3ZLcGdCcHUzOGRURDBIR09iOkxuTXk4TGRZRWw5WDhONUhSMWladkEifQ==
+
+# Creates enrollment tokens for elasticsearch nodes and kibana instances
+
+./elasticsearch-create-enrollment-token -s kibana
+
+
+# api 
+
+curl --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G https://localhost:9200/_cat
+
+#workerd   Create a Index
+curl -XPUT --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G 'https://localhost:9200/products?&pretty'
+curl -XPUT 'localhost:9200/products?&pretty'
+
+
+# create a document 
+
+curl -XPUT --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G 'https://localhost:9200/products/_doc/1' -H 'Content-Type: application/json' -d'
+{
+  "name": "iPhone 7",
+  "camera": "12MP",
+  "storage": "256GB",
+  "display": "4.7inch",
+  "battery": "1,960mAh",
+  "reviews": ["Incredibly happy after having used it for one week", "Best iPhone so far", "Very expensive, stick to Android"]
+}'
+
+
+# check the document
+curl -XGET --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G 'https://localhost:9200/products/_search?pretty=true&q=*:*'

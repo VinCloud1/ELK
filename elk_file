@@ -59,3 +59,7 @@ curl -XPUT --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -
 
 # check the document
 curl -XGET --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G 'https://localhost:9200/products/_search?pretty=true&q=*:*'
+
+
+#to list all tle indicies
+ curl -XGET --cacert /home/vagrant/elasticsearch-9.0.3/config/certs/http_ca.crt -u elastic:fhDPH8Hoeyc0H6gFBa+G 'https://localhost:9200/_cat/indices?v&pretty

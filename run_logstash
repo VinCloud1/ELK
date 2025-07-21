@@ -1,0 +1,11 @@
+Step 3 – To verify your configuration, run the following command:
+
+
+$ bin/logstash -f first-pipeline.conf --config.test_and_exit
+The --config.test_and_exit option parses your configuration file and reports any errors.
+
+If the configuration file passes the configuration test, start Logstash with the following command:
+
+$ bin/logstash -f first-pipeline.conf --config.reload.automatic
+
+The --config.reload.automatic option enables automatic config reloading so that you don’t have to stop and restart Logstash every time you modify the configuration file.
